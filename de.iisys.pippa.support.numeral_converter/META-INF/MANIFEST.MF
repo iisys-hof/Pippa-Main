@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Numeral_converter
+Bundle-SymbolicName: de.iisys.pippa.support.numeral_converter
+Bundle-Version: 0.1.0
+Bundle-Activator: de.iisys.pippa.support.numeral_converter.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: de.iisys.pippa.core.numeral_converter,
+ org.osgi.framework;version="1.3.0"
+Automatic-Module-Name: de.iisys.pippa.support.numeral_converter
+Export-Package: de.iisys.pippa.support.numeral_converter

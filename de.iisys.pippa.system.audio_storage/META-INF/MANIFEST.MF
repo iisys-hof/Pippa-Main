@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Audio_storage
+Bundle-SymbolicName: de.iisys.pippa.system.audio_storage
+Bundle-Version: 0.1.0
+Bundle-Activator: de.iisys.pippa.system.audio_storage.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: de.iisys.pippa.core.message,
+ de.iisys.pippa.core.message.speech_message,
+ de.iisys.pippa.core.message.stop_message,
+ de.iisys.pippa.core.message_processor,
+ org.osgi.framework;version="1.3.0"
+Automatic-Module-Name: de.iisys.ipa.core.audio_storage
+Export-Package: de.iisys.pippa.system.audio_storage

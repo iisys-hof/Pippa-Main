@@ -1,0 +1,15 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Executor
+Bundle-SymbolicName: de.iisys.pippa.system.executor
+Bundle-Version: 0.4.0
+Bundle-Activator: de.iisys.pippa.system.executor.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Automatic-Module-Name: de.iisys.ipa.system.executor
+Export-Package: de.iisys.pippa.system.executor
+Require-Bundle: org.junit;resolution:=optional,
+ de.iisys.pippa.core;bundle-version="0.8.0",
+ de.iisys.pippa.service.speech_out;resolution:=optional,
+ de.iisys.pippa.support.status;resolution:=optional,
+ de.iisys.pippa.skill.clock;resolution:=optional
+Import-Package: org.osgi.framework;version="1.3.0"

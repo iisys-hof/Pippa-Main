@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="deploybundles" default="removeskills" basedir=".">
+	<property name="raspberrypi" value="10.0.1.21" />
+	<property name="raspberryfolder" value="~" />
+	<property name="username" value="pi" />
+	<property name="password" value="raspberry" />
+	<property name="bundlespath" value="Desktop/Bundles" />
+
+	<property name="localDesktopPath" value="${user.home}\Desktop" />
+	<property name="localBundlesPath" value="${localDesktopPath}\Bundles" />
+
+	
+	<!-- Build Other Projects -->
+
+	<!-- Remove All Skills -->
+	<target name="removeskills">
+		<echo> "Removing Bundles/Skills from ${username}:${password}@${raspberrypi}:${raspberryfolder}/${bundlespath}"</echo>
+		<sshexec host="${raspberrypi}" username="${username}" password="${password}" trust="true" failonerror="true" usepty="true" useSystemIn="true" command="sudo rm -r -f ${raspberryfolder}/${bundlespath}" />
+		<antcall target="copyskills" />
+	</target>
+
+
+	<!-- Copy All Skills -->
+	<target name="copyskills">
+		<antcall target="zipskills" />
+
+		<echo>"Copying Bundles/Skills from ${localBundlesPath}_archive.zip to
+					${raspberrypi}:${raspberryfolder}/${bundlespath}_archive.zip"</echo>
+		<scp localfile="${localBundlesPath}_archive.zip" todir="${username}:${password}@${raspberrypi}:${raspberryfolder}/${bundlespath}_archive" trust="true" />
+
+		<antcall target="unzipskills" />
+	</target>
+
+	<target name="zipskills">
+		<echo>"Zipping Bundles/Skills in ${localBundlesPath}_archive"</echo>
+		<zip destfile="${localBundlesPath}_archive.zip" basedir="${localBundlesPath}" />
+	</target>
+
+	<target name="unzipskills">
+		<echo>"Unzipping Bundles/Skills from ${raspberrypi}:${raspberryfolder}/${bundlespath}_archive.zip to ${raspberrypi}:${raspberryfolder}/${bundlespath} and removing Zip"</echo>
+		<sshexec host="${raspberrypi}" username="${username}" password="${password}" trust="true" failonerror="true" usepty="true" useSystemIn="true" command="mkdir ${raspberryfolder}/${bundlespath}" />
+		<sshexec host="${raspberrypi}" username="${username}" password="${password}" trust="true" failonerror="true" usepty="true" useSystemIn="true" command="sudo unzip ${raspberryfolder}/${bundlespath}_archive -d ${raspberryfolder}/${bundlespath}" />
+		<sshexec host="${raspberrypi}" username="${username}" password="${password}" trust="true" failonerror="true" usepty="true" useSystemIn="true" command="sudo rm ${raspberryfolder}/${bundlespath}_archive -f" />
+	</target>
+
+
+
+</project>

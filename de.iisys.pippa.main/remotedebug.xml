@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="deploy" default="remotedebug" basedir=".">
+	<property name="raspberrypi" value="10.0.1.21" />
+	<property name="raspberryfolder" value="~" />
+	<property name="username" value="pi" />
+	<property name="password" value="raspberry" />
+
+	<target name="remotedebug">
+		<first id="jars">
+			<fileset dir="target" includes="**/uber*.jar" />
+		</first>
+		<pathconvert pathsep="," property="jar.path" refid="jars" />
+		<basename file="${jar.path}" property="jar.filename" />
+		<echo>"Found application ${jar.path}"</echo>
+
+		<echo>"Copying application to
+			${raspberrypi}:${raspberryfolder}/${jar.filename}"</echo>
+		<scp localfile="${jar.path}"
+			todir="${username}:${password}@${raspberrypi}:${raspberryfolder}"
+			trust="true" />
+
+		<echo>Version: ${ant.version}</echo>
+		
+		<echo>"Starting ${raspberrypi}:${raspberryfolder}/${jar.filename} in
+			debug mode"</echo>
+		<sshexec useSystemIn="true" host="${raspberrypi}" username="${username}"
+			password="${password}" trust="true" failonerror="true" usepty="true" 
+			command="java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=4000,suspend=y -jar ${jar.filename}" />
+	</target>
+</project>

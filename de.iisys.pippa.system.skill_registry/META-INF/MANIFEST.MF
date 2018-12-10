@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Skill_registry
+Bundle-SymbolicName: de.iisys.pippa.system.skill_registry
+Bundle-Version: 0.4.0
+Bundle-Activator: de.iisys.pippa.system.skill_registry.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: de.iisys.pippa.skill.clock;resolution:=optional,
+ de.iisys.pippa.skill.sorry;resolution:=optional,
+ de.iisys.pippa.skill.system_access;resolution:=optional,
+ de.iisys.pippa.support.status;resolution:=optional,
+ org.osgi.framework;version="1.3.0"
+Automatic-Module-Name: de.iisys.ipa.core.SkillRegistry
+Export-Package: de.iisys.pippa.system.skill_registry
+Require-Bundle: org.junit;resolution:=optional,
+ de.iisys.pippa.core

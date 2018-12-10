@@ -1,0 +1,16 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Dispatcher
+Bundle-SymbolicName: de.iisys.pippa.system.dispatcher
+Bundle-Version: 0.5.1
+Bundle-Activator: de.iisys.pippa.system.dispatcher.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Automatic-Module-Name: de.iisys.ipa.dispatcher
+Import-Package: de.iisys.pippa.skill.clock;resolution:=optional,
+ de.iisys.pippa.skill.sorry;resolution:=optional,
+ de.iisys.pippa.skill.system_access;resolution:=optional,
+ de.iisys.pippa.support.status;resolution:=optional,
+ org.osgi.framework;version="1.3.0"
+Export-Package: de.iisys.pippa.system.dispatcher
+Require-Bundle: org.junit;resolution:=optional,
+ de.iisys.pippa.core

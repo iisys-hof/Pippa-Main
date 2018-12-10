@@ -1,0 +1,92 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>de.iisys</groupId>
+	<artifactId>de.iisys.ipa.mantle.main</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+
+	<dependencies>
+
+		<dependency>
+ 			<groupId>org.eclipse.concierge</groupId>
+  			<artifactId>org.eclipse.concierge</artifactId>
+  			<version>5.1.0</version>
+		</dependency>
+
+	</dependencies>
+
+	<build>
+		<plugins>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>install-external</id>
+						<phase>clean</phase>
+						<configuration>
+							<file>${project.basedir}/org.eclipse.concierge-5.0.0.20151029184259.jar</file>
+							<repositoryLayout>default</repositoryLayout>
+							<groupId>org.eclipse.concierge</groupId>
+							<artifactId>Concierge</artifactId>
+							<version>5.0.0</version>
+							<packaging>jar</packaging>
+							<generatePom>true</generatePom>
+						</configuration>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<configuration>
+					<archive>
+						<manifest>
+							<mainClass>de.iisys.pippa.mantle.main.Main</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.1</version>
+				<configuration>
+					<source>1.8</source>
+					<target>1.8</target>
+				</configuration>
+			</plugin>
+
+
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-shade-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>shade</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<finalName>uber-${artifactId}-${version}</finalName>
+				</configuration>
+			</plugin>
+
+
+
+		</plugins>
+	</build>
+
+
+</project>

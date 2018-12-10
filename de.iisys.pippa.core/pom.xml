@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>de.iisys.pippa</groupId>
+	<artifactId>core</artifactId>
+	<packaging>bundle</packaging>
+	<version>0.8.1</version>
+
+	<properties>
+		<java.version>1.8</java.version>
+		<source.dir>src</source.dir>
+	</properties>
+
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.osgi/org.osgi.framework -->
+		<dependency>
+		    <groupId>org.osgi</groupId>
+		    <artifactId>org.osgi.framework</artifactId>
+		    <version>1.9.0</version>
+		</dependency>
+	
+	</dependencies>
+
+	<build>
+		<sourceDirectory>${source.dir}</sourceDirectory>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>${java.version}</source>
+					<target>${java.version}</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.felix</groupId>
+				<artifactId>maven-bundle-plugin</artifactId>
+				<extensions>true</extensions>
+				<configuration>
+					<instructions>
+						<Export-Package>de.iisys.pippa.core.*</Export-Package>
+					</instructions>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

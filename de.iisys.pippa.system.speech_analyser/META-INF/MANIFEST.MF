@@ -1,0 +1,12 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Speech_analyser
+Bundle-SymbolicName: de.iisys.pippa.system.speech_analyser
+Bundle-Version: 0.2.1
+Bundle-Activator: de.iisys.pippa.system.speech_analyser.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Import-Package: org.osgi.framework;version="1.3.0"
+Automatic-Module-Name: de.iisys.ipa.core.speech_analyser
+Export-Package: de.iisys.pippa.system.speech_analyser
+Require-Bundle: de.iisys.pippa.core,
+ org.junit;resolution:=optional

@@ -1,0 +1,14 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Config_manager
+Bundle-SymbolicName: de.iisys.pippa.support.config_manager
+Bundle-Version: 0.2.3
+Bundle-Activator: de.iisys.pippa.support.config_manager.Activator
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Automatic-Module-Name: de.iisys.ipa.support.config_manager
+Import-Package: de.iisys.pippa.core.config_manager,
+ de.iisys.pippa.core.skill,
+ org.osgi.framework;version="1.3.0"
+Export-Package: de.iisys.pippa.support.config_manager
+Bundle-ClassPath: gson-2.6.2.jar,
+ .

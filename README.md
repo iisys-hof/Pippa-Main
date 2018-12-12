@@ -77,6 +77,18 @@ This will start the OSGi-framework and load all bundles from the created folder 
 Make sure to only have a single version of each bundle since the framework does not do any version reconciliation and the choice of bundle might be random.
 
 
+### Summary
+
+- set the default input device to the microphone of your choice
+- install a speech recognition engine
+- install Flite
+- install Oracle Java as your runtime
+- create folder structure
+- clone the repository
+- make changes in the code where needed (speech recognition, speech synthesis)
+- export all packages as bundles except 'de.iisys.pippa.main'
+- compile and run 'de.issys.pippa.main'
+
 ## Legacy
 
 Thanks to group music-player the Core package can now be included into your projects through your local Maven.

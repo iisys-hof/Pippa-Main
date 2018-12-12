@@ -77,7 +77,7 @@ This will start the OSGi-framework and load all bundles from the created folder 
 Make sure to only have a single version of each bundle since the framework does not do any version reconciliation and the choice of bundle might be random.
 
 
-### Summary
+## Summary
 
 - set the default input device to the microphone of your choice
 - install a speech recognition engine

@@ -37,7 +37,8 @@ public class PippaOSGiFramework {
 	List<Bundle> supportBundles = new ArrayList<Bundle>();
 	
 	List<Bundle> serviceBundles = new ArrayList<Bundle>();
-	
+
+	private String MAIN_PATH = "./";
 	private String SYSTEM_BUNDLE_PATH = "./System";
 	private String CORE_BUNDLE_PATH = "./Core";
 	private String SUPPORT_BUNDLE_PATH = "./Support";
@@ -309,13 +310,13 @@ public class PippaOSGiFramework {
             prop.load(input);
 
             // set paths from prefix and distinct bundle paths
-            String prefix = prop.getProperty("pippa.path.prefix");
-            this.SYSTEM_BUNDLE_PATH = prefix + prop.getProperty("pippa.bundles.path.system");
-            this.CORE_BUNDLE_PATH = prefix + prop.getProperty("pippa.bundles.path.core");
-            this.SUPPORT_BUNDLE_PATH = prefix + prop.getProperty("pippa.bundles.path.support");
-            this.SKILL_BUNDLE_PATH = prefix + prop.getProperty("pippa.bundles.path.skill");
-            this.SERVICE_BUNDLE_PATH = prefix + prop.getProperty("pippa.bundles.path.service");
-        	
+            this.MAIN_PATH = prop.getProperty("pippa.main.path");
+            this.SYSTEM_BUNDLE_PATH = prop.getProperty("pippa.bundles.path.system");
+            this.CORE_BUNDLE_PATH = prop.getProperty("pippa.bundles.path.core");
+            this.SUPPORT_BUNDLE_PATH =prop.getProperty("pippa.bundles.path.support");
+            this.SKILL_BUNDLE_PATH = prop.getProperty("pippa.bundles.path.skill");
+            this.SERVICE_BUNDLE_PATH = prop.getProperty("pippa.bundles.path.service");
+            
         } catch (IOException ex) {
         	// TODO Auto-generated catch block
             ex.printStackTrace();

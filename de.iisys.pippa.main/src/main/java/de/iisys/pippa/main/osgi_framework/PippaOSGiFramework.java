@@ -57,28 +57,28 @@ public class PippaOSGiFramework {
 
 		this.startConciergeFramework();
 
-		this.loadSupportBundles();
-
-		this.loadSystemBundles();
-
-		this.loadCoreBundles();
-
-		this.loadServiceBundles();
 		
-		this.loadSkillBundles();
+		this.loadBundles("support", this.SUPPORT_BUNDLE_PATH, this.supportBundles);
+		
+		this.loadBundles("system", this.SYSTEM_BUNDLE_PATH, this.systemBundles);
+		
+		this.loadBundles("core", this.CORE_BUNDLE_PATH, this.coreBundles);
+		
+		this.loadBundles("service", this.SERVICE_BUNDLE_PATH, this.serviceBundles);
 
+		this.loadBundles("skill", this.SKILL_BUNDLE_PATH, this.skillBundles);		
 		
 		
 		// start all support bundles so they register themselves in the service-registry
-		this.startSupportBundles();
-		this.startServiceBundles();
+		this.startBundles("support", this.supportBundles);
+		this.startBundles("service", this.serviceBundles);
 		// start all skill bundles
 		
 
 		// start all system bundles so they register themselves in the service-registry
-		this.startSystemBundles();
+		this.startBundles("system", this.systemBundles);
 
-		this.startSkillBundles();
+		this.startBundles("skill", this.skillBundles);
 		
 		// TODO find a better way to get the pippa bundle
 		// get pippa bundle and start it after all the system bundles
@@ -91,8 +91,7 @@ public class PippaOSGiFramework {
 					e.printStackTrace();
 				}
 			}
-		}
-		
+		}		
 	}
 
 	private void startConciergeFramework() {
@@ -124,78 +123,20 @@ public class PippaOSGiFramework {
 
 	}
 
-	private void loadSystemBundles() {
+	private void loadBundles(String type, String bundlePath, List<Bundle> bundles) {
 
-		log.info("loading system bundles");
+		log.info("loading " + type + " bundles");
 
-		List<String> systemBundleNames = this.getAllBundleNames(this.SYSTEM_BUNDLE_PATH);
+		List<String> bundleNames = this.getAllBundleNames(bundlePath);
 
-		log.info(systemBundleNames.size() + " bundles found: " + systemBundleNames);
+		log.info(bundleNames.size() + " bundles found: " + bundleNames);
 		
-		for (String bundleName : systemBundleNames) {
-			this.systemBundles.add(this.loadBundle(this.SYSTEM_BUNDLE_PATH, bundleName));
+		for (String bundleName : bundleNames) {
+			this.bundles.add(this.loadBundle(bundlePath, bundleName));
 		}
-		
-		
-
-	}
-
-	private void loadCoreBundles() {
-
-		log.info("loading core bundles");
-
-		List<String> coreBundleNames = this.getAllBundleNames(this.CORE_BUNDLE_PATH);
-
-		log.info(coreBundleNames.size() + " bundles found: " + coreBundleNames);
-
-		for (String bundleName : coreBundleNames) {
-			this.coreBundles.add(this.loadBundle(this.CORE_BUNDLE_PATH, bundleName));
-		}
-
-	}
-
-	private void loadSupportBundles() {
-
-		log.info("loading support bundles");
-
-		List<String> supportBundleNames = this.getAllBundleNames(this.SUPPORT_BUNDLE_PATH);
-
-		log.info(supportBundleNames.size() + " bundles found: " + supportBundleNames);
-
-		for (String bundleName : supportBundleNames) {
-			this.supportBundles.add(this.loadBundle(this.SUPPORT_BUNDLE_PATH, bundleName));
-		}
-
-	}
-
-	private void loadSkillBundles() {
-
-		log.info("loading skill bundles");
-
-		List<String> skillBundleNames = this.getAllBundleNames(this.SKILL_BUNDLE_PATH);
-
-		log.info(skillBundleNames.size() + " bundles found: " + skillBundleNames);
-
-		for (String bundleName : skillBundleNames) {
-			this.skillBundles.add(this.loadBundle(this.SKILL_BUNDLE_PATH, bundleName));
-		}
-
-	}
-
-	private void loadServiceBundles() {
-
-		log.info("loading service bundles");
-
-		List<String> serviceBundleNames = this.getAllBundleNames(this.SERVICE_BUNDLE_PATH);
-
-		log.info(serviceBundleNames.size() + " bundles found: " + serviceBundleNames);
-
-		for (String bundleName : serviceBundleNames) {
-			this.serviceBundles.add(this.loadBundle(this.SERVICE_BUNDLE_PATH, bundleName));
-		}
-
 	}
 	
+		
 	private Bundle loadBundle(String folderPath, String bundleName) {
 
 		Bundle bundle = null;
@@ -207,7 +148,6 @@ public class PippaOSGiFramework {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 		return bundle;
 	}
 
@@ -225,65 +165,15 @@ public class PippaOSGiFramework {
 				listOfFiles.add(fileName);
 			}
 		}
-
 		return listOfFiles;
 	}
 
-	private void startSupportBundles() {
-
-		log.info("starting support bundles");
-
-		for (Bundle b : this.supportBundles) {
-			try {
-				b.start();
-			} catch (BundleException e) {
-				log.info("Error starting Bundle " + b.getSymbolicName() + ": " + e);
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-	}
-
-	private void startServiceBundles() {
-
-		log.info("starting service bundles");
-
-		for (Bundle b : this.serviceBundles) {
-			try {
-				b.start();
-			} catch (BundleException e) {
-				log.info("Error starting Bundle " + b.getSymbolicName() + ": " + e);
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-
-	}
 	
-	private void startSystemBundles() {
+	private void startBundles(String type, List<Bundle> bundles) {
 
-		log.info("starting system bundles");
+		log.info("starting " + type + " bundles");
 
-		for (Bundle b : context.getBundles()) {
-			if (systemBundlesNames.contains(b.getSymbolicName())) {
-				try {
-					b.start();
-				} catch (BundleException e) {
-					log.info("Error starting Bundle " + b.getSymbolicName() + ": " + e);
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-
-	}
-
-	private void startSkillBundles() {
-
-		log.info("starting skill bundles");
-
-		for (Bundle b : this.skillBundles) {
+		for (Bundle b : bundles) {
 			try {
 				b.start();
 			} catch (BundleException e) {
@@ -292,7 +182,5 @@ public class PippaOSGiFramework {
 				e.printStackTrace();
 			}
 		}
-
-	}
-
+	}	
 }

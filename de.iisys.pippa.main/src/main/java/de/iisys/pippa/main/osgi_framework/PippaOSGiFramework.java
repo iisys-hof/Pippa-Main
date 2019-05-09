@@ -1,10 +1,14 @@
 package de.iisys.pippa.main.osgi_framework;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.ServiceLoader;
 import java.util.logging.Logger;
 
@@ -34,14 +38,17 @@ public class PippaOSGiFramework {
 	
 	List<Bundle> serviceBundles = new ArrayList<Bundle>();
 
-	// TODO retrieve from some config-file
-	private final String SYSTEM_BUNDLE_PATH = System.getProperty("user.home") + "/Desktop/Bundles/System/plugins";
-	private final String CORE_BUNDLE_PATH = System.getProperty("user.home") + "/Desktop/Bundles/Core/plugins";
-	private final String SUPPORT_BUNDLE_PATH = System.getProperty("user.home") + "/Desktop/Bundles/Support/plugins";
-	private final String SKILL_BUNDLE_PATH = System.getProperty("user.home") + "/Desktop/Bundles/Skill/plugins";
-	private final String SERVICE_BUNDLE_PATH = System.getProperty("user.home") + "/Desktop/Bundles/Service/plugins";
+	private String MAIN_PATH = "./";
+	private String SYSTEM_BUNDLE_PATH = "./System";
+	private String CORE_BUNDLE_PATH = "./Core";
+	private String SUPPORT_BUNDLE_PATH = "./Support";
+	private String SKILL_BUNDLE_PATH = "./Skill";
+	private String SERVICE_BUNDLE_PATH = "./Service";
 
-	public void start() {
+	public void start(String pathToConfig) {
+
+		log.info("loading config-file and setting config");
+		this.loadAndSetConfig(pathToConfig);
 
 		log.info("loading and starting framework and bundles");
 
@@ -294,5 +301,28 @@ public class PippaOSGiFramework {
 		}
 
 	}
+	
+	private void loadAndSetConfig(String pathToConfig) {
+
+		try (InputStream input = new FileInputStream(pathToConfig)) {
+
+            Properties prop = new Properties();
+            prop.load(input);
+
+            // set paths from prefix and distinct bundle paths
+            this.MAIN_PATH = prop.getProperty("pippa.main.path");
+            this.SYSTEM_BUNDLE_PATH = prop.getProperty("pippa.bundles.path.system");
+            this.CORE_BUNDLE_PATH = prop.getProperty("pippa.bundles.path.core");
+            this.SUPPORT_BUNDLE_PATH =prop.getProperty("pippa.bundles.path.support");
+            this.SKILL_BUNDLE_PATH = prop.getProperty("pippa.bundles.path.skill");
+            this.SERVICE_BUNDLE_PATH = prop.getProperty("pippa.bundles.path.service");
+            
+        } catch (IOException ex) {
+        	// TODO Auto-generated catch block
+            ex.printStackTrace();
+        }
+		
+	}
+	
 
 }

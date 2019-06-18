@@ -312,56 +312,63 @@ public class ResolverImpl extends AMessageProcessor implements Resolver {
 
 		this.log.info("handle single message - " + speechMessage.getMessageId());
 
-		// if the message has no prohibited combination of properties
-		if (this.checkMessage(speechMessage)) {
+		// if the message is supposed to be returned to the dispatcher
+		if (speechMessage.getReturnToDispatcher() == true) {
+			this.log.fine("message will be returned to dispatcher - " + speechMessage.getMessageId());
+			this.returnMessage((AMessage) speechMessage);
+		} else {
 
-			// message shall be scheduled and the future execution time has not yet passed
-			if (speechMessage.getFutureExecutionRequest()
-					&& speechMessage.getExecutionDate().isAfter(LocalDateTime.now())) {
-				try {
-					this.log.fine("message is scheduled - " + speechMessage.getMessageId());
-					this.schedulerQueue.put((AMessage) speechMessage);
-					this.sendFeedbackMessage(speechMessage, false, false, true, false, false);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+			// if the message has no prohibited combination of properties
+			if (this.checkMessage(speechMessage)) {
 
-			}
-
-			// message shall wait for presence
-			else if (speechMessage.getPresenceRequest()) {
-				this.log.fine("message is waiting for presence - " + speechMessage.getMessageId());
-				this.waitingPresenceMessages.add(speechMessage);
-				this.sendFeedbackMessage(speechMessage, false, true, false, false, false);
-			}
-
-			// message is not to be scheduled and not to be waiting for presence
-			else {
-
-				this.log.fine("message is executed - " + speechMessage.getMessageId());
-				this.sendMessage((AMessage) speechMessage);
-
-				// message was not returned from scheduler, it must have been created manually
-				// -> user is present --> append messages that are waiting for presence
-				if (!speechMessage.getFutureExecutionRequest()) {
-					this.log.fine("user is present, send all presence-waiting messages");
-					for (ResolverSpeechMessage message : this.waitingPresenceMessages) {
-						this.log.fine("sending message - " + message.getMessageId());
-						this.sendMessage((AMessage) message);
+				// message shall be scheduled and the future execution time has not yet passed
+				if (speechMessage.getFutureExecutionRequest()
+						&& speechMessage.getExecutionDate().isAfter(LocalDateTime.now())) {
+					try {
+						this.log.fine("message is scheduled - " + speechMessage.getMessageId());
+						this.schedulerQueue.put((AMessage) speechMessage);
+						this.sendFeedbackMessage(speechMessage, false, false, true, false, false);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
 					}
-					this.waitingPresenceMessages.clear();
+
+				}
+
+				// message shall wait for presence
+				else if (speechMessage.getPresenceRequest()) {
+					this.log.fine("message is waiting for presence - " + speechMessage.getMessageId());
+					this.waitingPresenceMessages.add(speechMessage);
+					this.sendFeedbackMessage(speechMessage, false, true, false, false, false);
+				}
+
+				// message is not to be scheduled and not to be waiting for presence
+				else {
+
+					this.log.fine("message is executed - " + speechMessage.getMessageId());
+					this.sendMessage((AMessage) speechMessage);
+
+					// message was not returned from scheduler, it must have been created manually
+					// -> user is present --> append messages that are waiting for presence
+					if (!speechMessage.getFutureExecutionRequest()) {
+						this.log.fine("user is present, send all presence-waiting messages");
+						for (ResolverSpeechMessage message : this.waitingPresenceMessages) {
+							this.log.fine("sending message - " + message.getMessageId());
+							this.sendMessage((AMessage) message);
+						}
+						this.waitingPresenceMessages.clear();
+					}
 				}
 			}
-		}
 
-		// if the message has a prohibited combination of properties
-		else {
-			// it is discarded by disregard and the sender is given feedback about the
-			// rejection
-			this.log.fine("message is rejected due to prohibited combination of properties - "
-					+ speechMessage.getMessageId());
-			this.sendFeedbackMessage(speechMessage, true, false, false, false, false);
+			// if the message has a prohibited combination of properties
+			else {
+				// it is discarded by disregard and the sender is given feedback about the
+				// rejection
+				this.log.fine("message is rejected due to prohibited combination of properties - "
+						+ speechMessage.getMessageId());
+				this.sendFeedbackMessage(speechMessage, true, false, false, false, false);
 
+			}
 		}
 	}
 
@@ -410,6 +417,14 @@ public class ResolverImpl extends AMessageProcessor implements Resolver {
 			e.printStackTrace();
 		}
 
+	}
+
+	private void returnMessage(AMessage message) {
+		try {
+			this.dispatcherQueue.put(message);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void setStatus(ResolverSpeechMessage message) {
